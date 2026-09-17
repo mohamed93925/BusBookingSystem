@@ -11,7 +11,7 @@ public class DatabaseConnection{
 
         try{
 
-            String url = "jdbc:mysql://localhost3306:/Bus_Booking_System";
+            String url = "jdbc:mysql://localhost:3306/bus_booking";
             String username = "root";
             String password = "9777";
 

@@ -1,10 +1,18 @@
 package com.BookingApp;
 
+import java.sql.Connection;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
+
+        Connection connection = DatabaseConnection.getConnection();
+
+        if(connection != null){
+            System.out.println("Database connected successfull..."  );
+
+        }
 
         Scanner scanner = new Scanner(System.in);
 
