@@ -2,32 +2,36 @@ package com.BookingApp;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
-public class DatabaseConnection{
+public class DatabaseConnection {
 
-    public static Connection getConnection(){
+    private static final String URL =
+            "jdbc:mysql://localhost:3306/bus_booking";
 
-        Connection connection = null;
+    private static final String USERNAME = "root";
 
-        try{
+    private static final String PASSWORD =
+            "9777";
 
-            String url = "jdbc:mysql://localhost:3306/bus_booking";
-            String username = "root";
-            String password = "9777";
+    public static Connection getConnection() {
 
-            connection = DriverManager.getConnection(url,username,password);
+        try {
 
-            System.out.println("Database Connected Successfully");
+            Connection connection = DriverManager.getConnection(
+                    URL,
+                    USERNAME,
+                    PASSWORD
+            );
 
-        } catch (Exception e) {
-            System.out.println("Database connection failed!!!");
+            return connection;
+
+        } catch (SQLException e) {
+
+            System.out.println("Database connection failed!");
             e.printStackTrace();
+
+            return null;
         }
-
-        return connection;
-
     }
-
-
-
 }

@@ -3,13 +3,21 @@ package com.BookingApp;
 public class Passenger {
 
     private String passengerId;
-    private String name;
+    private String passengerName;
     private String phoneNumber;
     private String email;
 
-    public Passenger(String passengerId, String name, String phoneNumber, String email) {
+    public Passenger() {
+    }
+
+    public Passenger(
+            String passengerId,
+            String passengerName,
+            String phoneNumber,
+            String email
+    ) {
         this.passengerId = passengerId;
-        this.name = name;
+        this.passengerName = passengerName;
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
@@ -18,22 +26,31 @@ public class Passenger {
         return passengerId;
     }
 
-    public String getName() {
-        return name;
+    public void setPassengerId(String passengerId) {
+        this.passengerId = passengerId;
+    }
+
+    public String getPassengerName() {
+        return passengerName;
+    }
+
+    public void setPassengerName(String passengerName) {
+        this.passengerName = passengerName;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getEmail() {
         return email;
     }
 
-    public void displayPassenger() {
-        System.out.println("Passenger ID: " + passengerId);
-        System.out.println("Name: " + name);
-        System.out.println("Phone: " + phoneNumber);
-        System.out.println("Email: " + email);
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

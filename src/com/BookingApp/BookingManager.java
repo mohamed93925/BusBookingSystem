@@ -1,143 +1,245 @@
 package com.BookingApp;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.Scanner;
 
 public class BookingManager {
 
-    private ArrayList<Booking> bookings;
+    private BookingDAO bookingDAO = new BookingDAO();
 
-    public BookingManager() {
-        bookings = new ArrayList<>();
-    }
+    private PassengerDAO passengerDAO =
+            new PassengerDAO();
 
-    // Add a booking
-    public void addBooking(Booking booking) {
-        bookings.add(booking);
-        System.out.println("Booking added successfully.");
-    }
+    private BusDAO busDAO = new BusDAO();
 
-    // Display all bookings
-    public void displayBookings() {
+    public void bookTicket(Scanner scanner) {
 
-        if (bookings.isEmpty()) {
-            System.out.println("No bookings available.");
+        System.out.println("\n--- Book Ticket ---");
+
+        System.out.print("Passenger ID: ");
+        String passengerId = scanner.nextLine();
+
+        Passenger passenger =
+                passengerDAO.getPassengerById(passengerId);
+
+        if (passenger == null) {
+
+            System.out.println(
+                    "Passenger not found."
+            );
+
+            System.out.println(
+                    "Please add passenger first."
+            );
+
             return;
         }
 
-        for (int i = 0; i < bookings.size(); i++) {
+        System.out.print("Bus ID: ");
+        String busId = scanner.nextLine();
 
-            Booking booking = bookings.get(i);
+        Bus bus = busDAO.getBusById(busId);
 
-            booking.displayBooking();
+        if (bus == null) {
 
-            System.out.println("-------------------------");
-        }
-    }
-
-    // Check whether a seat is already booked
-    public boolean isSeatBooked(String busId, int seatNumber) {
-
-        for (int i = 0; i < bookings.size(); i++) {
-
-            Booking booking = bookings.get(i);
-
-            if (booking.getBusId().equals(busId)
-                    && booking.getSeatNumber() == seatNumber
-                    && booking.getStatus().equalsIgnoreCase("CONFIRMED")) {
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    // Book a ticket
-    public void bookTicket(Bus bus, Passenger passenger,
-                           String bookingId, int seatNumber,
-                           String bookingDate) {
-
-        // Check seat number
-        if (seatNumber < 1 || seatNumber > bus.getTotalSeats()) {
-
-            System.out.println("Invalid seat number.");
+            System.out.println("Bus not found.");
             return;
         }
 
-        // Check available seats
         if (bus.getAvailableSeats() <= 0) {
 
-            System.out.println("No seats available.");
+            System.out.println(
+                    "No seats available."
+            );
+
             return;
         }
 
-        // Check duplicate seat
-        if (isSeatBooked(bus.getBusId(), seatNumber)) {
+        System.out.print("Seat Number: ");
+        String seatNumber = scanner.nextLine();
 
-            System.out.println("Seat " + seatNumber + " is already booked.");
-            return;
-        }
+        String bookingId =
+                "BOOK" + System.currentTimeMillis();
 
-        // Create booking
         Booking booking = new Booking(
                 bookingId,
-                passenger.getPassengerId(),
-                bus.getBusId(),
+                passengerId,
+                busId,
                 seatNumber,
-                bookingDate,
+                LocalDate.now().toString(),
                 "CONFIRMED"
         );
 
-        // Add booking
-        bookings.add(booking);
+        boolean bookingAdded =
+                bookingDAO.addBooking(booking);
 
-        // Reduce available seats
-        bus.setAvailableSeats(bus.getAvailableSeats() - 1);
+        if (bookingAdded) {
 
-        System.out.println("Booking successful!");
-        System.out.println("Booking ID: " + bookingId);
-        System.out.println("Seat Number: " + seatNumber);
-        System.out.println("Remaining Seats: " + bus.getAvailableSeats());
+            bus.setAvailableSeats(
+                    bus.getAvailableSeats() - 1
+            );
+
+            busDAO.updateBus(bus);
+
+            System.out.println(
+                    "Ticket booked successfully!"
+            );
+
+            System.out.println(
+                    "Booking ID: " + bookingId
+            );
+
+        } else {
+
+            System.out.println(
+                    "Booking failed."
+            );
+        }
     }
 
-    // Find booking by Booking ID
-    public Booking findBooking(String bookingId) {
+    public void cancelBooking(Scanner scanner) {
+
+        System.out.println("\n--- Cancel Booking ---");
+
+        System.out.print("Enter Booking ID: ");
+        String bookingId = scanner.nextLine();
+
+        Booking booking =
+                bookingDAO.getBookingById(bookingId);
+
+        if (booking == null) {
+
+            System.out.println(
+                    "Booking not found."
+            );
+
+            return;
+        }
+
+        boolean updated =
+                bookingDAO.updateBookingStatus(
+                        bookingId,
+                        "CANCELLED"
+                );
+
+        if (updated) {
+
+            Bus bus =
+                    busDAO.getBusById(
+                            booking.getBusId()
+                    );
+
+            if (bus != null) {
+
+                bus.setAvailableSeats(
+                        bus.getAvailableSeats() + 1
+                );
+
+                busDAO.updateBus(bus);
+            }
+
+            System.out.println(
+                    "Booking cancelled successfully."
+            );
+
+        } else {
+
+            System.out.println(
+                    "Cancellation failed."
+            );
+        }
+    }
+
+    public void viewBookings() {
+
+        System.out.println("\n--- Bookings ---");
+
+        var bookings =
+                bookingDAO.getAllBookings();
+
+        if (bookings.isEmpty()) {
+
+            System.out.println(
+                    "No bookings found."
+            );
+
+            return;
+        }
 
         for (int i = 0; i < bookings.size(); i++) {
 
             Booking booking = bookings.get(i);
 
-            if (booking.getBookingId().equals(bookingId)) {
+            System.out.println(
+                    "\nBooking ID: "
+                            + booking.getBookingId()
+            );
 
-                return booking;
-            }
+            System.out.println(
+                    "Passenger ID: "
+                            + booking.getPassengerId()
+            );
+
+            System.out.println(
+                    "Bus ID: "
+                            + booking.getBusId()
+            );
+
+            System.out.println(
+                    "Seat: "
+                            + booking.getSeatNumber()
+            );
+
+            System.out.println(
+                    "Date: "
+                            + booking.getBookingDate()
+            );
+
+            System.out.println(
+                    "Status: "
+                            + booking.getBookingStatus()
+            );
         }
-
-        return null;
     }
-    public void cancelBooking(String bookingId, Bus bus) {
 
-        Booking booking = findBooking(bookingId);
+    public void addPassenger(Scanner scanner) {
 
-        if (booking == null) {
+        System.out.println("\n--- Add Passenger ---");
 
-            System.out.println("Booking not found.");
-            return;
+        System.out.print("Passenger ID: ");
+        String id = scanner.nextLine();
+
+        System.out.print("Passenger Name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Phone Number: ");
+        String phone = scanner.nextLine();
+
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
+
+        Passenger passenger =
+                new Passenger(
+                        id,
+                        name,
+                        phone,
+                        email
+                );
+
+        boolean result =
+                passengerDAO.addPassenger(passenger);
+
+        if (result) {
+
+            System.out.println(
+                    "Passenger added successfully!"
+            );
+
+        } else {
+
+            System.out.println(
+                    "Failed to add passenger."
+            );
         }
-
-        if (booking.getStatus().equalsIgnoreCase("CANCELLED")) {
-
-            System.out.println("Booking is already cancelled.");
-            return;
-        }
-
-        booking.setStatus("CANCELLED");
-
-        bus.setAvailableSeats(bus.getAvailableSeats() + 1);
-
-        System.out.println("Booking cancelled successfully.");
-        System.out.println("Booking ID: " + bookingId);
-        System.out.println("Seat Number: " + booking.getSeatNumber());
-        System.out.println("Available Seats: " + bus.getAvailableSeats());
     }
 }

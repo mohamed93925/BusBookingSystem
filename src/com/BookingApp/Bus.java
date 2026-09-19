@@ -14,14 +14,22 @@ public class Bus {
     private int totalSeats;
     private int availableSeats;
 
+    public Bus() {
+    }
 
-    // Constructor
-    public Bus(String busId, String busNumber, String busName,
-               String source, String destination,
-               String journeyDate, String departureTime,
-               String arrivalTime, double price,
-               int totalSeats, int availableSeats) {
-
+    public Bus(
+            String busId,
+            String busNumber,
+            String busName,
+            String source,
+            String destination,
+            String journeyDate,
+            String departureTime,
+            String arrivalTime,
+            double price,
+            int totalSeats,
+            int availableSeats
+    ) {
         this.busId = busId;
         this.busNumber = busNumber;
         this.busName = busName;
@@ -34,9 +42,6 @@ public class Bus {
         this.totalSeats = totalSeats;
         this.availableSeats = availableSeats;
     }
-
-
-    // Getters and Setters
 
     public String getBusId() {
         return busId;
@@ -46,7 +51,6 @@ public class Bus {
         this.busId = busId;
     }
 
-
     public String getBusNumber() {
         return busNumber;
     }
@@ -54,7 +58,6 @@ public class Bus {
     public void setBusNumber(String busNumber) {
         this.busNumber = busNumber;
     }
-
 
     public String getBusName() {
         return busName;
@@ -64,7 +67,6 @@ public class Bus {
         this.busName = busName;
     }
 
-
     public String getSource() {
         return source;
     }
@@ -72,7 +74,6 @@ public class Bus {
     public void setSource(String source) {
         this.source = source;
     }
-
 
     public String getDestination() {
         return destination;
@@ -82,7 +83,6 @@ public class Bus {
         this.destination = destination;
     }
 
-
     public String getJourneyDate() {
         return journeyDate;
     }
@@ -90,7 +90,6 @@ public class Bus {
     public void setJourneyDate(String journeyDate) {
         this.journeyDate = journeyDate;
     }
-
 
     public String getDepartureTime() {
         return departureTime;
@@ -100,7 +99,6 @@ public class Bus {
         this.departureTime = departureTime;
     }
 
-
     public String getArrivalTime() {
         return arrivalTime;
     }
@@ -108,7 +106,6 @@ public class Bus {
     public void setArrivalTime(String arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
-
 
     public double getPrice() {
         return price;
@@ -118,7 +115,6 @@ public class Bus {
         this.price = price;
     }
 
-
     public int getTotalSeats() {
         return totalSeats;
     }
@@ -127,27 +123,11 @@ public class Bus {
         this.totalSeats = totalSeats;
     }
 
-
     public int getAvailableSeats() {
         return availableSeats;
     }
 
     public void setAvailableSeats(int availableSeats) {
         this.availableSeats = availableSeats;
-    }
-    public void displayBus() {
-
-        System.out.println("Bus ID: " + busId);
-        System.out.println("Bus Number: " + busNumber);
-        System.out.println("Bus Name: " + busName);
-        System.out.println("Source: " + source);
-        System.out.println("Destination: " + destination);
-        System.out.println("Journey Date: " + journeyDate);
-        System.out.println("Departure Time: " + departureTime);
-        System.out.println("Arrival Time: " + arrivalTime);
-        System.out.println("Price: " + price);
-        System.out.println("Total Seats: " + totalSeats);
-        System.out.println("Available Seats: " + availableSeats);
-
     }
 }

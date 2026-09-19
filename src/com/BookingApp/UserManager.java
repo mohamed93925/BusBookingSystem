@@ -1,104 +1,84 @@
 package com.BookingApp;
 
-
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserManager {
 
-    ArrayList<User> users = new ArrayList<>();
-    Scanner scan;
+    private ArrayList<User> users = new ArrayList<>();
 
-    public UserManager(Scanner scan){
+    public void registerUser(Scanner scanner) {
 
-        this.scan = scan;
+        System.out.println("\n--- User Registration ---");
 
-    }
-     public void Register(){
+        System.out.print("Enter User ID: ");
+        String userId = scanner.nextLine();
 
-         System.out.println();
-         System.out.println("-----------USER REGISTRATION-----------");
+        System.out.print("Enter Username: ");
+        String username = scanner.nextLine();
 
-         System.out.print("Enter your name : ");
-         String name = scan.nextLine();
+        System.out.print("Enter Email: ");
+        String email = scanner.nextLine();
 
-         System.out.print("Enter your email : ");
-         String email = scan.nextLine();
+        System.out.print("Enter Password: ");
+        String password = scanner.nextLine();
 
-         System.out.print("Enter UserId : ");
-         String userId = scan.nextLine();
+        System.out.print("Enter Phone Number: ");
+        String phone = scanner.nextLine();
 
+        if (userId.equals(password)) {
 
-         for (int i = 0; i < users.size(); i++) {
+            System.out.println(
+                    "User ID and password cannot be the same."
+            );
 
-             User user = users.get(i);
+            return;
+        }
 
-             if (user.getUserId().equals(userId)) {
+        User user = new User(
+                userId,
+                email,
+                password,
+                username,
+                phone
+        );
 
-                 System.out.println("User ID already exists!");
-                 System.out.println("Please register again with a different User ID.");
+        users.add(user);
 
-             }
-         }
-
-         System.out.print("Enter your Password : ");
-         String password = scan.nextLine();
-
-         while (userId.equals(password)) {
-
-             System.out.println("User ID and Password cannot be the same!");
-             System.out.print("Please Re-enter the password : ");
-
-             password = scan.nextLine();
-         }
-
-         System.out.print("Enter your Phone number : ");
-         String phoneNo = scan.nextLine();
-
-         System.out.println("Registration Sucessfull...");
-
-
-         User user = new User( userId,  email,  password,  name,  phoneNo);
-         users.add(user);
-
-
-
-
-
+        System.out.println("User registered successfully!");
     }
 
-    public void Login(){
+    public boolean loginUser(Scanner scanner) {
 
-        System.out.println();
-        System.out.println("---------USER LOGIN---------");
+        System.out.println("\n--- User Login ---");
 
-        System.out.print("Enter the UserId : ");
-        String userId = scan.nextLine();
+        System.out.print("Enter User ID: ");
+        String userId = scanner.nextLine();
 
-        System.out.print("Enter the Password : ");
-        String Password = scan.nextLine();
+        System.out.print("Enter Password: ");
+        String password = scanner.nextLine();
 
-        boolean found = false;
+        for (int i = 0; i < users.size(); i++) {
 
-        for(int i =0;i<users.size();i++){
             User user = users.get(i);
 
-            if(user.getUserId().equals(userId) && user.getPassword().equals(Password)){
-                System.out.println("Logged in Successfully...");
-                System.out.println("Welcome " + user.getName());
+            if (
+                    user.getUserId().equals(userId)
+                            &&
+                            user.getPassword().equals(password)
+            ) {
 
-                 found = true;
-                break;
+                System.out.println(
+                        "Login successful. Welcome "
+                                + user.getUsername()
+                );
 
+                return true;
             }
-
-        }
-        if(!found){
-            System.out.println("Invalid userId or Password");
         }
 
+        System.out.println("Invalid User ID or Password.");
 
-
+        return false;
     }
-
 }

@@ -5,55 +5,74 @@ public class Booking {
     private String bookingId;
     private String passengerId;
     private String busId;
-    private int seatNumber;
+    private String seatNumber;
     private String bookingDate;
-    private String status;
+    private String bookingStatus;
 
-    public Booking(String bookingId, String passengerId, String busId,
-                   int seatNumber, String bookingDate, String status) {
+    public Booking() {
+    }
 
+    public Booking(
+            String bookingId,
+            String passengerId,
+            String busId,
+            String seatNumber,
+            String bookingDate,
+            String bookingStatus
+    ) {
         this.bookingId = bookingId;
         this.passengerId = passengerId;
         this.busId = busId;
         this.seatNumber = seatNumber;
         this.bookingDate = bookingDate;
-        this.status = status;
+        this.bookingStatus = bookingStatus;
     }
 
     public String getBookingId() {
         return bookingId;
     }
 
+    public void setBookingId(String bookingId) {
+        this.bookingId = bookingId;
+    }
+
     public String getPassengerId() {
         return passengerId;
+    }
+
+    public void setPassengerId(String passengerId) {
+        this.passengerId = passengerId;
     }
 
     public String getBusId() {
         return busId;
     }
 
-    public int getSeatNumber() {
+    public void setBusId(String busId) {
+        this.busId = busId;
+    }
+
+    public String getSeatNumber() {
         return seatNumber;
+    }
+
+    public void setSeatNumber(String seatNumber) {
+        this.seatNumber = seatNumber;
     }
 
     public String getBookingDate() {
         return bookingDate;
     }
 
-    public String getStatus() {
-        return status;
+    public void setBookingDate(String bookingDate) {
+        this.bookingDate = bookingDate;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public String getBookingStatus() {
+        return bookingStatus;
     }
 
-    public void displayBooking() {
-        System.out.println("Booking ID: " + bookingId);
-        System.out.println("Passenger ID: " + passengerId);
-        System.out.println("Bus ID: " + busId);
-        System.out.println("Seat Number: " + seatNumber);
-        System.out.println("Booking Date: " + bookingDate);
-        System.out.println("Status: " + status);
+    public void setBookingStatus(String bookingStatus) {
+        this.bookingStatus = bookingStatus;
     }
 }

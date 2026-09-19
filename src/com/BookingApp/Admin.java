@@ -6,7 +6,6 @@ public class Admin {
     private String password;
 
     public Admin(String adminId, String password) {
-
         this.adminId = adminId;
         this.password = password;
     }
